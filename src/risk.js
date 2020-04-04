@@ -1,5 +1,5 @@
 //this function caluclate risk of positive test on COVID from questionary
-export function calculateRisk (symptoms) {
+function calculateRisk (symptoms) {
 	//risk of person without symptoms and contact
 	let risk = 0.02
 	if (symptoms.indexOf("FEVER")>-1){
@@ -20,7 +20,9 @@ export function calculateRisk (symptoms) {
 	if (symptoms.indexOf("PREVIOUS_POSITIVE")>-1){
 		risk=0.9
 	}	
+	risk.toFixed(3)
 	return risk
 }
 
 
+module.exports = calculateRisk

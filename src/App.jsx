@@ -26,9 +26,11 @@ class App extends React.Component {
   }
 
   addCase ({ id, symptoms }) {
+    console.log(id)
+    console.log(symptoms)
     const probability = 50
     this.setState((state, props) => {
-      const cases = state.cases.push({ id, symptoms, probability })
+      const cases = [...state.cases, { id, symptoms, probability }]
       return {
         ...state,
         cases
@@ -79,7 +81,7 @@ class App extends React.Component {
     if (this.state.currentStep === 'CASES') {
       return (
         <Container className="App">
-          <Cases cases={this.state.cases} calculateBuckets={this.calculateBuckets.bind(this)}/>
+          <Cases cases={this.state.cases} addCase={this.addCase.bind(this)} calculateBuckets={this.calculateBuckets.bind(this)}/>
         </Container>
       )
     } else {
