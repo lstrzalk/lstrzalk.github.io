@@ -10,9 +10,7 @@ import { SentimentVerySatisfied, SentimentVeryDissatisfied, HelpOutline } from '
 import Button from '@material-ui/core/Button'
 import ButtonGroup from '@material-ui/core/ButtonGroup'
 
-export const Buckets = ({ buckets }) => {
-  console.log(buckets)
-  return (
+export const Buckets = ({ buckets }) => (
   <div>
     <Grid
       container
@@ -70,37 +68,5 @@ export const Buckets = ({ buckets }) => {
         </Grid>
       ))}
     </Grid>
-
-
-    {/*<Grid container spacing={2}>*/}
-    {/*  <Grid item xs={12}>*/}
-    {/*    <Grid container justify="center" spacing={4}>*/}
-    {/*      {buckets.map((bucket) => (*/}
-    {/*        <Grid key={bucket.id} item>*/}
-    {/*          <Paper style={{ height: 240, width: 100, marginBottom: 10 }}>*/}
-    {/*            <Grid container spacing={2} direction="column">*/}
-    {/*              <Typography variant="h5" component="h2">*/}
-    {/*                #{bucket.id}*/}
-    {/*              </Typography>*/}
-    {/*              <Typography style={{marginBottom:12}} color="textSecondary">*/}
-    {/*                P: {(bucket.probability*100).toFixed(2)}%*/}
-    {/*              </Typography>*/}
-    {/*              {bucket.samples.map((sample) => (*/}
-    {/*                <Grid key={sample.id} item>*/}
-    {/*                  Sample #{sample.id}*/}
-    {/*                  <Typography color="textSecondary">*/}
-    {/*                    P: {(sample.probability*100).toFixed(2)}%*/}
-    {/*                  </Typography>*/}
-    {/*                </Grid>*/}
-    {/*                ))}*/}
-    {/*            </Grid>*/}
-    {/*          </Paper>*/}
-    {/*          <CheckCircleOutline style={{ color: green[500], cursor: 'pointer' }} />*/}
-    {/*          <HighlightOff style={{ color: red[500], cursor: 'pointer' }} />*/}
-    {/*        </Grid>*/}
-    {/*      ))}*/}
-    {/*    </Grid>*/}
-    {/*  </Grid>*/}
-    {/*</Grid>*/}
   </div>
-)}
+)
