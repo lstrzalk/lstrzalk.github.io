@@ -5,6 +5,7 @@ import { SYMPTOMS } from './data'
 import Container from '@material-ui/core/Container'
 import { Buckets } from './buckets/Buckets'
 import calculateRisk from './risk'
+import allocateSamples from './sample-allocation/allocate-samples'
 
 class App extends React.Component {
   constructor (props) {
@@ -14,12 +15,32 @@ class App extends React.Component {
       cases: [{
         id: 1,
         symptoms: [],
-        probability: 0
+        probability: 0.05
       },
         {
           id: 2,
           symptoms: [SYMPTOMS.COUGH],
-          probability: 10
+          probability: 0.1
+        },
+        {
+          id: 3,
+          symptoms: [SYMPTOMS.BREATHING_PROBLEM, SYMPTOMS.FEVER],
+          probability: 0.3
+        },
+        {
+          id: 4,
+          symptoms: [SYMPTOMS.CLOSE_CONTACT, SYMPTOMS.COMING_FROM_ABROAD],
+          probability: 0.2
+        },
+        {
+          id: 5,
+          symptoms: [SYMPTOMS.COUGH, SYMPTOMS.COMING_FROM_ABROAD],
+          probability: 0.04
+        },
+        {
+          id: 6,
+          symptoms: [SYMPTOMS.COUGH, SYMPTOMS.COMING_FROM_ABROAD],
+          probability: 0.4
         }
       ],
       buckets: []
@@ -60,16 +81,8 @@ class App extends React.Component {
   }
 
   calculateBuckets () {
-    const buckets = [
-      {
-        samples: ['1'], p: 0.03, id: '1'
-      }, { samples: ['2', '3'], p: 0.3, id: '2'
-      }, { samples: ['4', '5', '6', '7', '8'], p: 0.1, id: '3'
-      }, { samples: ['9', '10'], p: 0.3, id: '4'
-      }, { samples: ['11', '12', '13', '14'], p: 0.3, id: '5'
-      }, { samples: ['14'], p: 0.3, id: '6'
-    }
-    ]
+    let buckets = allocateSamples(this.state.cases)
+    console.log(buckets)
     this.setState((state, props) => {
       return {
         ...state,

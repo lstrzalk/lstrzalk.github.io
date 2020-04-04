@@ -39,7 +39,7 @@ export const Cases = ({ cases, addCase, calculateBuckets }) => {
         <Table aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>id</TableCell>
+              <TableCell>Sample ID</TableCell>
               <TableCell align="right">Fever</TableCell>
               <TableCell align="right">Cough</TableCell>
               <TableCell align="right">Difficulty with breathing</TableCell>
@@ -59,7 +59,7 @@ export const Cases = ({ cases, addCase, calculateBuckets }) => {
                 <TableCell align="right">{symptomOccurred(row.symptoms.includes(SYMPTOMS.BREATHING_PROBLEM))}</TableCell>
                 <TableCell align="right">{symptomOccurred(row.symptoms.includes(SYMPTOMS.CLOSE_CONTACT))}</TableCell>
                 <TableCell align="right">{symptomOccurred(row.symptoms.includes(SYMPTOMS.COMING_FROM_ABROAD))}</TableCell>
-                <TableCell align="right">{row.probability.toFixed(2)}%</TableCell>
+                <TableCell align="right">{(row.probability*100).toFixed(2)}%</TableCell>
               </TableRow>
             ))}
           </TableBody>

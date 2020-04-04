@@ -1,4 +1,4 @@
-function allocate(samplesParam) {
+function allocateSamples(samplesParam) {
     let samples = (samplesParam.slice(0));
     let result = [];
     while (!(samples.length === 0)) {
@@ -14,8 +14,8 @@ function allocate(samplesParam) {
 
 function assignNextBucket(samples) {
     samples.sort(function (first, second) {
-        return first.p < second.p ? 1
-            : first.p > second.p ? -1
+        return first.probability < second.probability ? 1
+            : first.probability > second.probability ? -1
                 : 0;
     });
 
@@ -25,12 +25,12 @@ function assignNextBucket(samples) {
         let s = samples[i];
         if (freeCapacity > 0) {
             bucket.samples.push(s);
-            bucket.r *= 1 - s.p;
+            bucket.reverseProbability *= 1 - s.probability;
             freeCapacity--;
         }
     }
 
-    bucket.p = 1 - bucket.r;
+    bucket.probability = 1 - bucket.reverseProbability;
 
     return bucket;
 }
@@ -58,11 +58,11 @@ function findBestBucketCapacity(sample) {
     ];
     for (let i = 0; i < bucketRanges.length; i++) {
         let t = bucketRanges[i];
-        if (t.isInRange(sample.p)) {
+        if (t.isInRange(sample.probability)) {
             return t.bestBucketSize;
         }
     }
-    console.error("The sample probability is out of range! " + sample.p);
+    console.error("The sample probability is out of range! " + sample.probability);
     return 1;
 }
 
@@ -71,34 +71,24 @@ const Sample = (function () {
     function Sample(id, p) {
         if (this.id === undefined)
             this.id = null;
-        if (this.p === undefined)
-            this.p = null;
+        if (this.probability === undefined)
+            this.probability = null;
         this.id = id;
-        this.p = p;
+        this.probability = p;
     }
 
     return Sample;
 }());
 Sample["__class"] = "Sample";
 
-const Bucket = (function () {
-    function Bucket() {
-        this.id = ++Bucket.numberOfAllBuckets;
-        if (this.p === undefined)
-            this.p = null;
-        if (this.r === undefined)
-            this.r = null;
-        if (this.samples === undefined)
-            this.samples = null;
-        this.p = 0.0;
-        this.r = 1.0;
-        this.samples = [];
-    }
+let numberOfAllBuckets = 0;
 
-    return Bucket;
-}());
-Bucket.numberOfAllBuckets = 0;
-Bucket["__class"] = "Bucket";
+class Bucket {
+    id = ++numberOfAllBuckets;
+    probability = 0.0
+    reverseProbability = 1.0
+    samples = []
+}
 
 const BucketProbabilityRange = (function () {
     function BucketProbabilityRange(minimumm, maximum, bestBucketSize) {
@@ -119,3 +109,5 @@ const BucketProbabilityRange = (function () {
     return BucketProbabilityRange;
 }());
 BucketProbabilityRange["__class"] = "BucketProbabilityRange";
+
+module.exports = allocateSamples

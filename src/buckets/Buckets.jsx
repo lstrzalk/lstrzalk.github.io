@@ -19,11 +19,14 @@ export const Buckets = ({ buckets }) => (
                     #{bucket.id}
                   </Typography>
                   <Typography style={{marginBottom:12}} color="textSecondary">
-                    P: {bucket.p}
+                    P: {(bucket.probability*100).toFixed(2)}%
                   </Typography>
                   {bucket.samples.map((sample) => (
-                    <Grid key={sample} item>
-                      Sample #{sample}
+                    <Grid key={sample.id} item>
+                      Sample #{sample.id}
+                      <Typography color="textSecondary">
+                        P: {(sample.probability*100).toFixed(2)}%
+                      </Typography>
                     </Grid>
                     ))}
                 </Grid>
