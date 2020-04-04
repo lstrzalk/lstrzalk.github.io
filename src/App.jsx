@@ -154,6 +154,7 @@ class App extends React.Component {
             {this.state.currentStep === STEPS.BUCKETS && <Buckets
               buckets={this.state.buckets}
               setBucketStatus={this.setBucketStatus.bind(this)}
+              numberOfSamples={this.state.cases.length}
               estimatedNumberOfTests={estimateNumberOfTests(this.state.buckets)}
             />}
 

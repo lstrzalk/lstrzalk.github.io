@@ -11,7 +11,7 @@ import Button from '@material-ui/core/Button'
 import ButtonGroup from '@material-ui/core/ButtonGroup'
 import { BucketStatus } from '../sample-allocation/allocate-samples'
 
-export const Buckets = ({ buckets, estimatedNumberOfTests, setBucketStatus }) => {
+export const Buckets = ({ buckets, estimatedNumberOfTests, setBucketStatus, numberOfSamples }) => {
 
   useEffect(() => {
     window.location.hash = '#buckets'
@@ -19,8 +19,11 @@ export const Buckets = ({ buckets, estimatedNumberOfTests, setBucketStatus }) =>
 
   return (
     <div id="buckets">
-      <Typography variant="h4" style={{ marginBottom: 20 }}>
+      <Typography variant="h4">
         Estimated number of tests: {estimatedNumberOfTests}
+      </Typography>
+      <Typography variant="subtitle1" style={{ marginBottom: 16 }}>
+        Traditional individual number of tests: {numberOfSamples}
       </Typography>
       <Grid
         container
@@ -29,7 +32,7 @@ export const Buckets = ({ buckets, estimatedNumberOfTests, setBucketStatus }) =>
         alignItems="flex-start"
         spacing={4}
       >
-        {buckets.map((bucket, index) => (
+        {buckets.sort((a, b) => a.samples.length > b.samples.length).map((bucket, index) => (
 
           <Grid item key={index}>
             <Paper elevation={0} className={`${bucket.recalculated ? 'bucket_recalculated' : 'bucket'}`}>
