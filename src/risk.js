@@ -20,6 +20,7 @@ function calculateRisk (symptoms) {
 	if (symptoms.indexOf("PREVIOUS_POSITIVE")>-1){
 		risk=0.9
 	}	
+	risk.toFixed(3)
 	return risk
 }
 
