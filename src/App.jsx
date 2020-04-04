@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography'
 import Toolbar from '@material-ui/core/Toolbar'
 import Button from '@material-ui/core/Button'
 import calculateRisk from './risk'
-import { allocateSamples, BucketStatus, estimateNumberOfTests } from './sample-allocation/allocate-samples'
+import { allocateSamples, estimateNumberOfTests } from './sample-allocation/allocate-samples'
 import { demoCases } from './demoCases'
 
 class App extends React.Component {
@@ -72,6 +72,17 @@ class App extends React.Component {
     })
   }
 
+  removeCase (id) {
+    this.setState((state, props) => {
+        const cases = this.state.cases
+        return {
+          ...state,
+          cases: cases.filter((c) => c.id !== id)
+        }
+      }
+    )
+  }
+
   updateCase ({ id, symptoms }) {
     const probability = calculateRisk(symptoms)
     this.setState((state, props) => {
@@ -129,7 +140,8 @@ class App extends React.Component {
 
         <main>
           <Container>
-            {this.state.currentStep === 'CASES' && (<Cases cases={this.state.cases} addCase={this.addCase.bind(this)} addDemoCases={this.addDemoCases.bind(this)}/>)}
+            {this.state.currentStep === 'CASES' &&
+            (<Cases cases={this.state.cases} addCase={this.addCase.bind(this)} addDemoCases={this.addDemoCases.bind(this)} removeCase={this.removeCase.bind(this)}/>)}
 
             {(!!this.state.cases.length && this.state.currentStep === 'CASES') && <div style={{ display: 'flex', justifyContent: 'center', margin: '16px' }}>
               <Button size="large" color="primary" variant={'contained'} onClick={this.calculateBuckets.bind(this)}>
