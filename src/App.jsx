@@ -5,7 +5,7 @@ import { SYMPTOMS } from './data'
 import Container from '@material-ui/core/Container'
 import { Buckets } from './buckets/Buckets'
 import calculateRisk from './risk'
-import allocateSamples from './sample-allocation/allocate-samples'
+import { allocateSamples } from './sample-allocation/allocate-samples'
 
 class App extends React.Component {
   constructor (props) {

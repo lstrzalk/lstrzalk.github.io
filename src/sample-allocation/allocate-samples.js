@@ -1,4 +1,4 @@
-function allocateSamples(samplesParam) {
+export function allocateSamples(samplesParam) {
     let samples = (samplesParam.slice(0));
     let result = [];
     while (!(samples.length === 0)) {
@@ -109,8 +109,3 @@ const BucketProbabilityRange = (function () {
     return BucketProbabilityRange;
 }());
 BucketProbabilityRange["__class"] = "BucketProbabilityRange";
-
-module.exports = {
-    allocateSamples: allocateSamples,
-    Sample: Sample
-};
