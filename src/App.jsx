@@ -51,6 +51,17 @@ class App extends React.Component {
     }))
   }
 
+  removeCase (id) {
+    this.setState((state, props) => {
+        const cases = this.state.cases
+        return {
+          ...state,
+          cases: cases.filter((c) => c.id !== id)
+        }
+      }
+    )
+  }
+
   changeStage (currentStep) {
     this.setState((state, props) => ({
       ...state,
@@ -126,7 +137,8 @@ class App extends React.Component {
         <main>
           <Container>
             {this.state.currentStep === STEPS.CASES && (
-              <Cases cases={this.state.cases} addCase={this.addCase.bind(this)} addDemoCases={this.addDemoCases.bind(this)}/>)}
+              <Cases cases={this.state.cases} addCase={this.addCase.bind(this)} addDemoCases={this.addDemoCases.bind(this)}
+                     removeCase={this.removeCase.bind(this)}/>)}
 
             {(!!this.state.cases.length && this.state.currentStep === STEPS.CASES) &&
             <div style={{ display: 'flex', justifyContent: 'center', margin: '16px' }}>

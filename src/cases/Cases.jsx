@@ -13,13 +13,14 @@ import green from '@material-ui/core/colors/green'
 import red from '@material-ui/core/colors/red'
 import Fab from '@material-ui/core/Fab'
 import AddIcon from '@material-ui/icons/Add'
+import DeleteIcon from '@material-ui/icons/Delete'
 import { NewCase } from './NewCase'
 import Button from '@material-ui/core/Button'
 
 const symptomOccurred = occurred => occurred ?
   <CheckCircleOutline style={{ color: green[500] }}/> : <HighlightOff style={{ color: red[500] }}/>
 
-export const Cases = ({ cases, addCase, addDemoCases }) => {
+export const Cases = ({ cases, addCase, addDemoCases, removeCase }) => {
   const [values, setValues] = React.useState({ newCaseModal: false })
 
   const openModal = () => {
@@ -48,6 +49,7 @@ export const Cases = ({ cases, addCase, addDemoCases }) => {
                 <TableCell align="right"><b>Close contact with infected person</b></TableCell>
                 <TableCell align="right"><b>Return from Abroad</b></TableCell>
                 <TableCell align="right"><b>Probability</b></TableCell>
+                <TableCell align="right"><b>Action</b></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -62,6 +64,7 @@ export const Cases = ({ cases, addCase, addDemoCases }) => {
                   <TableCell align="right">{symptomOccurred(row.symptoms.includes(SYMPTOMS.CLOSE_CONTACT))}</TableCell>
                   <TableCell align="right">{symptomOccurred(row.symptoms.includes(SYMPTOMS.COMING_FROM_ABROAD))}</TableCell>
                   <TableCell align="right">{(row.probability * 100).toFixed(2)}%</TableCell>
+                  <TableCell align="right"><DeleteIcon style={{ cursor: 'pointer' }} onClick={() => removeCase(row.id)}/></TableCell>
                 </TableRow>
               ))}
             </TableBody>
