@@ -59,7 +59,7 @@ export const Cases = ({ cases, addCase, calculateBuckets }) => {
                 <TableCell align="right">{symptomOccurred(row.symptoms.includes(SYMPTOMS.BREATHING_PROBLEM))}</TableCell>
                 <TableCell align="right">{symptomOccurred(row.symptoms.includes(SYMPTOMS.CLOSE_CONTACT))}</TableCell>
                 <TableCell align="right">{symptomOccurred(row.symptoms.includes(SYMPTOMS.COMING_FROM_ABROAD))}</TableCell>
-                <TableCell align="right">{row.probability}%</TableCell>
+                <TableCell align="right">{row.probability.toFixed(2)}%</TableCell>
               </TableRow>
             ))}
           </TableBody>

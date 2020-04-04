@@ -4,6 +4,7 @@ import { Cases } from './cases/Cases'
 import { SYMPTOMS } from './data'
 import Container from '@material-ui/core/Container'
 import { Buckets } from './buckets/Buckets'
+import calculateRisk from './risk'
 
 class App extends React.Component {
   constructor (props) {
@@ -28,7 +29,7 @@ class App extends React.Component {
   addCase ({ id, symptoms }) {
     console.log(id)
     console.log(symptoms)
-    const probability = 50
+    const probability = calculateRisk(symptoms)
     this.setState((state, props) => {
       const cases = [...state.cases, { id, symptoms, probability }]
       return {
