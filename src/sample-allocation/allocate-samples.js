@@ -110,4 +110,7 @@ const BucketProbabilityRange = (function () {
 }());
 BucketProbabilityRange["__class"] = "BucketProbabilityRange";
 
-module.exports = allocateSamples
+module.exports = {
+    allocateSamples: allocateSamples,
+    Sample: Sample
+};
