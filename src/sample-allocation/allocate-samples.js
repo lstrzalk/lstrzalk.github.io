@@ -66,6 +66,16 @@ function findBestBucketCapacity(sample) {
     return 1;
 }
 
+export function estimateNumberOfTests(buckets) {
+    let result = 0;
+    for (let i = 0; i < buckets.length; i++) {
+        result += 1;
+        if (buckets[i].samples.length > 1) {
+            result += buckets[i].probability * buckets[i].samples.length;
+        }
+    }
+    return Math.round(result);
+}
 
 const Sample = (function () {
     function Sample(id, p) {
@@ -85,8 +95,8 @@ let numberOfAllBuckets = 0;
 
 class Bucket {
     id = ++numberOfAllBuckets;
-    probability = 0.0
-    reverseProbability = 1.0
+    probability = 0.0;
+    reverseProbability = 1.0;
     samples = []
 }
 
@@ -109,3 +119,13 @@ const BucketProbabilityRange = (function () {
     return BucketProbabilityRange;
 }());
 BucketProbabilityRange["__class"] = "BucketProbabilityRange";
+
+/*
+// used in allocate-samples-test.js
+module.exports = {
+    allocateSamples: allocateSamples,
+    estimateNumberOfTests: estimateNumberOfTests,
+    Sample: Sample,
+    Bucket: Bucket
+};
+*/
