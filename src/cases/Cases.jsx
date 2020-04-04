@@ -14,11 +14,12 @@ import red from '@material-ui/core/colors/red'
 import Fab from '@material-ui/core/Fab'
 import AddIcon from '@material-ui/icons/Add'
 import { NewCase } from './NewCase'
+import Button from '@material-ui/core/Button'
 
 const symptomOccurred = occurred => occurred ?
   <CheckCircleOutline style={{ color: green[500] }}/> : <HighlightOff style={{ color: red[500] }}/>
 
-export const Cases = ({ cases, addCase }) => {
+export const Cases = ({ cases, addCase, calculateBuckets }) => {
   const [values, setValues] = React.useState({ newCaseModal: false })
 
   const openModal = () => {
@@ -68,6 +69,11 @@ export const Cases = ({ cases, addCase }) => {
         <AddIcon/>
       </Fab>
       <NewCase open={values.newCaseModal} handleClose={closeModal}/>
+      <div style={{ marginTop: 20 }}>
+        <Button variant="contained" color="primary" onClick={calculateBuckets}>
+          Calculate buckets
+        </Button>
+      </div>
     </div>
   )
 }
