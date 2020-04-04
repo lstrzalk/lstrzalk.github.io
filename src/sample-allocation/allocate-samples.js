@@ -69,10 +69,10 @@ function findBestBucketCapacity(sample) {
 function estimateNumberOfTests(buckets) {
     let result = 0;
     for (let i = 0; i < buckets.length; i++) {
+        result += 1;
         if (buckets[i].samples.length > 1) {
-            result += 1;
+            result += buckets[i].probability * buckets[i].samples.length;
         }
-        result += buckets[i].probability * buckets[i].samples.length;
     }
     return Math.round(result);
 }
