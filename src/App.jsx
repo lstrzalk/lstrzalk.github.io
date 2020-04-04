@@ -1,25 +1,33 @@
-import React from 'react';
-import './App.scss';
+import React from 'react'
+import './App.scss'
 import { Cases } from './cases/Cases'
-
-const STEPS = [
-  'CASES', 'BUCKETS'
-]
-
+import { SYMPTOMS } from './data'
+import Container from '@material-ui/core/Container'
 
 class App extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
     this.state = {
       currentStep: 'CASES',
-      cases: [],
+      cases: [{
+        id: 1,
+        symptoms: [],
+        probability: 0
+      },
+        {
+          id: 2,
+          symptoms: [SYMPTOMS.COUGH],
+          probability: 10
+        }
+      ],
       buckets: []
-    };
+    }
   }
 
-  addCase ({id, symptoms}) {
+  addCase ({ id, symptoms }) {
+    const probability = 50
     this.setState((state, props) => {
-      const cases = state.cases.push({id, symptoms})
+      const cases = state.cases.push({ id, symptoms, probability })
       return {
         ...state,
         cases
@@ -27,11 +35,12 @@ class App extends React.Component {
     })
   }
 
-  updateCase ({id, symptoms}) {
+  updateCase ({ id, symptoms }) {
+    const probability = 50
     this.setState((state, props) => {
       const caseIndex = state.cases.findIndex(it => it.id === id)
       const cases = state.cases.splice(caseIndex, 1)
-      cases.push({id, symptoms})
+      cases.push({ id, symptoms, probability })
       return {
         ...state,
         cases
@@ -46,13 +55,13 @@ class App extends React.Component {
     }))
   }
 
-  render() {
+  render () {
     return (
-      <div className="App">
+      <Container className="App">
         <Cases cases={this.state.cases}/>
-      </div>
+      </Container>
     )
   }
 }
 
-export default App;
+export default App
