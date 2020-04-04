@@ -9,47 +9,27 @@ import Typography from '@material-ui/core/Typography'
 import Toolbar from '@material-ui/core/Toolbar'
 import Button from '@material-ui/core/Button'
 import calculateRisk from './risk'
-import { allocateSamples, BucketStatus, Bucket } from './sample-allocation/allocate-samples'
+import { allocateSamples, BucketStatus, Bucket, estimateNumberOfTests } from './sample-allocation/allocate-samples'
 import { Summary } from './summary/Summary'
+import { demoCases } from './demoCases'
 
 class App extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
       currentStep: STEPS.CASES,
-      cases: [{
-        id: 1,
-        symptoms: [],
-        probability: 0.05
-      },
-        {
-          id: 2,
-          symptoms: [SYMPTOMS.COUGH],
-          probability: 0.1
-        },
-        {
-          id: 3,
-          symptoms: [SYMPTOMS.BREATHING_PROBLEM, SYMPTOMS.FEVER],
-          probability: 0.3
-        },
-        {
-          id: 4,
-          symptoms: [SYMPTOMS.CLOSE_CONTACT, SYMPTOMS.COMING_FROM_ABROAD],
-          probability: 0.2
-        },
-        {
-          id: 5,
-          symptoms: [SYMPTOMS.COUGH, SYMPTOMS.COMING_FROM_ABROAD],
-          probability: 0.04
-        },
-        {
-          id: 6,
-          symptoms: [SYMPTOMS.COUGH, SYMPTOMS.COMING_FROM_ABROAD],
-          probability: 0.4
-        }
-      ],
+      cases: [],
       buckets: []
     }
+  }
+
+  addDemoCases () {
+    this.setState((state, props) => {
+      return {
+        ...state,
+        cases: demoCases
+      }
+    })
   }
 
   addCase ({ id, symptoms }) {
@@ -145,7 +125,8 @@ class App extends React.Component {
 
         <main>
           <Container>
-            {this.state.currentStep === STEPS.CASES && (<Cases cases={this.state.cases} addCase={this.addCase.bind(this)}/>)}
+            {this.state.currentStep === STEPS.CASES && (
+              <Cases cases={this.state.cases} addCase={this.addCase.bind(this)} addDemoCases={this.addDemoCases.bind(this)}/>)}
 
             {(!!this.state.cases.length && this.state.currentStep === STEPS.CASES) &&
             <div style={{ display: 'flex', justifyContent: 'center', margin: '16px' }}>
@@ -154,7 +135,11 @@ class App extends React.Component {
               </Button>
             </div>}
 
-            {this.state.currentStep === STEPS.BUCKETS && <Buckets buckets={this.state.buckets} setBucketStatus={this.setBucketStatus.bind(this)}/>}
+            {this.state.currentStep === STEPS.BUCKETS && <Buckets
+              buckets={this.state.buckets}
+              setBucketStatus={this.setBucketStatus.bind(this)}
+              estimatedNumberOfTests={estimateNumberOfTests(this.state.buckets)}
+            />}
 
             {(!!this.state.cases.length && this.state.currentStep === STEPS.BUCKETS) &&
             <div style={{ display: 'flex', justifyContent: 'center', margin: '16px' }}>

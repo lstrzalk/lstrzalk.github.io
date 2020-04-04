@@ -11,8 +11,11 @@ import Button from '@material-ui/core/Button'
 import ButtonGroup from '@material-ui/core/ButtonGroup'
 import { BucketStatus } from '../sample-allocation/allocate-samples'
 
-export const Buckets = ({ buckets, setBucketStatus }) => (
+export const Buckets = ({ buckets, estimatedNumberOfTests, setBucketStatus }) => (
   <div>
+    <Typography variant="h4" style={{marginBottom: 20}}>
+      Estimated number of tests: {estimatedNumberOfTests}
+    </Typography>
     <Grid
       container
       direction="row"
