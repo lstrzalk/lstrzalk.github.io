@@ -4,30 +4,22 @@ import { Cases } from './cases/Cases'
 import { SYMPTOMS } from './data'
 import Container from '@material-ui/core/Container'
 import { Buckets } from './buckets/Buckets'
+import AppBar from '@material-ui/core/AppBar/AppBar'
+import Typography from '@material-ui/core/Typography'
+import Toolbar from '@material-ui/core/Toolbar'
+import Button from '@material-ui/core/Button'
 
 class App extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
       currentStep: 'CASES',
-      cases: [{
-        id: 1,
-        symptoms: [],
-        probability: 0
-      },
-        {
-          id: 2,
-          symptoms: [SYMPTOMS.COUGH],
-          probability: 10
-        }
-      ],
+      cases: [],
       buckets: []
     }
   }
 
   addCase ({ id, symptoms }) {
-    console.log(id)
-    console.log(symptoms)
     const probability = 50
     this.setState((state, props) => {
       const cases = [...state.cases, { id, symptoms, probability }]
@@ -62,12 +54,17 @@ class App extends React.Component {
     const buckets = [
       {
         samples: ['1'], p: 0.03, id: '1'
-      }, { samples: ['2', '3'], p: 0.3, id: '2'
-      }, { samples: ['4', '5', '6', '7', '8'], p: 0.1, id: '3'
-      }, { samples: ['9', '10'], p: 0.3, id: '4'
-      }, { samples: ['11', '12', '13', '14'], p: 0.3, id: '5'
-      }, { samples: ['14'], p: 0.3, id: '6'
-    }
+      }, {
+        samples: ['2', '3'], p: 0.3, id: '2'
+      }, {
+        samples: ['4', '5', '6', '7', '8'], p: 0.1, id: '3'
+      }, {
+        samples: ['9', '10'], p: 0.3, id: '4'
+      }, {
+        samples: ['11', '12', '13', '14'], p: 0.3, id: '5'
+      }, {
+        samples: ['14'], p: 0.3, id: '6'
+      }
     ]
     this.setState((state, props) => {
       return {
@@ -78,19 +75,33 @@ class App extends React.Component {
   }
 
   render () {
-    if (this.state.currentStep === 'CASES') {
-      return (
-        <Container className="App">
-          <Cases cases={this.state.cases} addCase={this.addCase.bind(this)} calculateBuckets={this.calculateBuckets.bind(this)}/>
-        </Container>
-      )
-    } else {
-      return (
-        <Container className="App">
-          <Buckets buckets={this.state.buckets}/>
-        </Container>
-      )
-    }
+    return (
+      <div className={'App'}>
+        <header>
+          <AppBar position="static">
+            <Toolbar>
+              <Typography variant="h6">
+                Coronadvisor
+              </Typography>
+            </Toolbar>
+          </AppBar>
+        </header>
+
+        <main>
+          <Container>
+            {this.state.currentStep === 'CASES' && (<Cases cases={this.state.cases} addCase={this.addCase.bind(this)}/>)}
+
+            {(!!this.state.cases.length && this.state.currentStep === 'CASES') && <div style={{ display: 'flex', justifyContent: 'center', margin: '16px' }}>
+              <Button size="large" color="primary" variant={'contained'} onClick={this.calculateBuckets.bind(this)}>
+                Calculate buckets
+              </Button>
+            </div>}
+
+            {this.state.currentStep === 'BUCKETS' && <Buckets buckets={this.state.buckets}/>}
+          </Container>
+        </main>
+      </div>
+    )
   }
 }
 
