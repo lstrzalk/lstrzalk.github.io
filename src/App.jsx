@@ -8,19 +8,51 @@ import AppBar from '@material-ui/core/AppBar/AppBar'
 import Typography from '@material-ui/core/Typography'
 import Toolbar from '@material-ui/core/Toolbar'
 import Button from '@material-ui/core/Button'
+import calculateRisk from './risk'
+import { allocateSamples } from './sample-allocation/allocate-samples'
 
 class App extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
       currentStep: 'CASES',
-      cases: [],
+      cases: [{
+        id: 1,
+        symptoms: [],
+        probability: 0.05
+      },
+        {
+          id: 2,
+          symptoms: [SYMPTOMS.COUGH],
+          probability: 0.1
+        },
+        {
+          id: 3,
+          symptoms: [SYMPTOMS.BREATHING_PROBLEM, SYMPTOMS.FEVER],
+          probability: 0.3
+        },
+        {
+          id: 4,
+          symptoms: [SYMPTOMS.CLOSE_CONTACT, SYMPTOMS.COMING_FROM_ABROAD],
+          probability: 0.2
+        },
+        {
+          id: 5,
+          symptoms: [SYMPTOMS.COUGH, SYMPTOMS.COMING_FROM_ABROAD],
+          probability: 0.04
+        },
+        {
+          id: 6,
+          symptoms: [SYMPTOMS.COUGH, SYMPTOMS.COMING_FROM_ABROAD],
+          probability: 0.4
+        }
+      ],
       buckets: []
     }
   }
 
   addCase ({ id, symptoms }) {
-    const probability = 50
+    const probability = calculateRisk(symptoms)
     this.setState((state, props) => {
       const cases = [...state.cases, { id, symptoms, probability }]
       return {
@@ -31,7 +63,7 @@ class App extends React.Component {
   }
 
   updateCase ({ id, symptoms }) {
-    const probability = 50
+    const probability = calculateRisk(symptoms)
     this.setState((state, props) => {
       const caseIndex = state.cases.findIndex(it => it.id === id)
       const cases = state.cases.splice(caseIndex, 1)
@@ -51,21 +83,7 @@ class App extends React.Component {
   }
 
   calculateBuckets () {
-    const buckets = [
-      {
-        samples: ['1'], p: 0.03, id: '1'
-      }, {
-        samples: ['2', '3'], p: 0.3, id: '2'
-      }, {
-        samples: ['4', '5', '6', '7', '8'], p: 0.1, id: '3'
-      }, {
-        samples: ['9', '10'], p: 0.3, id: '4'
-      }, {
-        samples: ['11', '12', '13', '14'], p: 0.3, id: '5'
-      }, {
-        samples: ['14'], p: 0.3, id: '6'
-      }
-    ]
+    const buckets = allocateSamples(this.state.cases)
     this.setState((state, props) => {
       return {
         ...state,
