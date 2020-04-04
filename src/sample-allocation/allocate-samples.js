@@ -93,7 +93,7 @@ Sample["__class"] = "Sample";
 
 let numberOfAllBuckets = 0;
 
-class Bucket {
+export class Bucket {
     id = ++numberOfAllBuckets;
     probability = 0.0;
     reverseProbability = 1.0;

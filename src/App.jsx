@@ -1,7 +1,7 @@
 import React from 'react'
 import './App.scss'
 import { Cases } from './cases/Cases'
-import { SYMPTOMS } from './data'
+import { SYMPTOMS, STEPS } from './data'
 import Container from '@material-ui/core/Container'
 import { Buckets } from './buckets/Buckets'
 import AppBar from '@material-ui/core/AppBar/AppBar'
@@ -9,13 +9,14 @@ import Typography from '@material-ui/core/Typography'
 import Toolbar from '@material-ui/core/Toolbar'
 import Button from '@material-ui/core/Button'
 import calculateRisk from './risk'
-import { allocateSamples, BucketStatus } from './sample-allocation/allocate-samples'
+import { allocateSamples, BucketStatus, Bucket } from './sample-allocation/allocate-samples'
+import { Summary } from './summary/Summary'
 
 class App extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      currentStep: 'CASES',
+      currentStep: STEPS.CASES,
       cases: [{
         id: 1,
         symptoms: [],
@@ -62,17 +63,12 @@ class App extends React.Component {
     })
   }
 
-  updateCase ({ id, symptoms }) {
-    const probability = calculateRisk(symptoms)
-    this.setState((state, props) => {
-      const caseIndex = state.cases.findIndex(it => it.id === id)
-      const cases = state.cases.splice(caseIndex, 1)
-      cases.push({ id, symptoms, probability })
-      return {
-        ...state,
-        cases
-      }
-    })
+  resetState () {
+    this.setState(() => ({
+      currentStep: STEPS.CASES,
+      cases: [],
+      buckets: []
+    }))
   }
 
   changeStage (currentStep) {
@@ -89,14 +85,44 @@ class App extends React.Component {
         ...state,
         buckets
       }
-    }, () => this.changeStage('BUCKETS'))
+    }, () => this.changeStage(STEPS.BUCKETS))
+  }
+
+  recalculateBuckets () {
+    const buckets = Array.from(this.state.buckets)
+    const positiveBuckets = buckets.filter(bucket => bucket.bucketStatus === BucketStatus.POSITIVE && bucket.samples.length > 1)
+    const notCheckedBuckets = buckets.filter(bucket => bucket.bucketStatus === BucketStatus.NOT_CHECKED)
+
+    const samplesFromPositiveBuckets = positiveBuckets.flatMap(bucket => bucket.samples.map(sample => {
+      const newBucket = new Bucket()
+      newBucket.samples.push(sample)
+      newBucket.probability = sample.probability / bucket.probability
+      sample.probability = newBucket.probability
+      return newBucket
+    }))
+
+    const newBuckets = [
+      ...notCheckedBuckets,
+      ...samplesFromPositiveBuckets
+    ]
+
+    if (!!newBuckets.length) {
+      this.setState((state, props) => {
+        return {
+          ...state,
+          buckets: newBuckets
+        }
+      })
+    } else {
+      this.changeStage(STEPS.SUMMARY)
+    }
   }
 
   setBucketStatus (bucketId, status) {
     this.setState((state, props) => {
-      const buckets = state.buckets.slice(0)
+      const buckets = Array.from(state.buckets)
       const bucket = buckets.find(bucket => bucket.id === bucketId)
-      bucket.status = status
+      bucket.bucketStatus = status
       return {
         ...state,
         buckets
@@ -119,15 +145,25 @@ class App extends React.Component {
 
         <main>
           <Container>
-            {this.state.currentStep === 'CASES' && (<Cases cases={this.state.cases} addCase={this.addCase.bind(this)}/>)}
+            {this.state.currentStep === STEPS.CASES && (<Cases cases={this.state.cases} addCase={this.addCase.bind(this)}/>)}
 
-            {(!!this.state.cases.length && this.state.currentStep === 'CASES') && <div style={{ display: 'flex', justifyContent: 'center', margin: '16px' }}>
+            {(!!this.state.cases.length && this.state.currentStep === STEPS.CASES) &&
+            <div style={{ display: 'flex', justifyContent: 'center', margin: '16px' }}>
               <Button size="large" color="primary" variant={'contained'} onClick={this.calculateBuckets.bind(this)}>
                 Calculate buckets
               </Button>
             </div>}
 
-            {this.state.currentStep === 'BUCKETS' && <Buckets buckets={this.state.buckets} setBucketStatus={this.setBucketStatus.bind(this)}/>}
+            {this.state.currentStep === STEPS.BUCKETS && <Buckets buckets={this.state.buckets} setBucketStatus={this.setBucketStatus.bind(this)}/>}
+
+            {(!!this.state.cases.length && this.state.currentStep === STEPS.BUCKETS) &&
+            <div style={{ display: 'flex', justifyContent: 'center', margin: '16px' }}>
+              <Button size="large" color="primary" variant={'contained'} onClick={this.recalculateBuckets.bind(this)}>
+                Proceed
+              </Button>
+            </div>}
+
+            {this.state.currentStep === STEPS.SUMMARY && <Summary callback={this.resetState.bind(this)}/>}
           </Container>
         </main>
       </div>

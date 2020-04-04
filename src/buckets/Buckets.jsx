@@ -60,30 +60,32 @@ export const Buckets = ({ buckets, setBucketStatus }) => (
               orientation="vertical"
               fullWidth
               disableRipple
-              disableElevation
               disableFocusRipple
               size='small'
             >
               <Button
-                variant={bucket.status === BucketStatus.POSITIVE ? 'contained' : 'outlined'}
-                color={bucket.status === BucketStatus.POSITIVE ? 'primary' : 'default'}
+                variant={bucket.bucketStatus === BucketStatus.NEGATIVE ? 'contained' : 'outlined'}
+                color={bucket.bucketStatus === BucketStatus.NEGATIVE ? 'primary' : 'default'}
                 startIcon={<SentimentVerySatisfied/>}
-                onClick={() => setBucketStatus(bucket.id, BucketStatus.POSITIVE)}
+                onClick={() => setBucketStatus(bucket.id, BucketStatus.NEGATIVE)}
+                disableElevation
 
               > No Virus </Button>
 
               <Button
-                variant={bucket.status === BucketStatus.NEGATIVE ? 'contained' : 'outlined'}
-                color={bucket.status === BucketStatus.NEGATIVE ? 'primary' : 'default'}
+                variant={bucket.bucketStatus === BucketStatus.POSITIVE ? 'contained' : 'outlined'}
+                color={bucket.bucketStatus === BucketStatus.POSITIVE ? 'primary' : 'default'}
                 startIcon={<SentimentVeryDissatisfied/>}
-                onClick={() => setBucketStatus(bucket.id, BucketStatus.NEGATIVE)}
+                onClick={() => setBucketStatus(bucket.id, BucketStatus.POSITIVE)}
+                disableElevation
               > Virus found </Button>
 
               <Button
-                variant={bucket.status === BucketStatus.NOT_CHECKED ? 'contained' : 'outlined'}
-                color={bucket.status === BucketStatus.NOT_CHECKED ? 'primary' : 'default'}
+                variant={bucket.bucketStatus === BucketStatus.NOT_CHECKED ? 'contained' : 'outlined'}
+                color={bucket.bucketStatus === BucketStatus.NOT_CHECKED ? 'primary' : 'default'}
                 startIcon={<HelpOutline/>}
                 onClick={() => setBucketStatus(bucket.id, BucketStatus.NOT_CHECKED)}
+                disableElevation
               > Not tested </Button>
             </ButtonGroup>
           </Paper>

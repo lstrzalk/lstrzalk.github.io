@@ -1,6 +1,8 @@
-export const STEPS = [
-  'CASES', 'BUCKETS'
-]
+export const STEPS = {
+  CASES: 'CASES',
+  BUCKETS: 'BUCKETS',
+  SUMMARY: 'SUMMARY'
+}
 
 export const SYMPTOMS = {
   FEVER: 'FEVER',
