@@ -76,7 +76,7 @@ export const NewCase = ({ open, handleClose, ids }) => {
 
   return (
     <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-      <DialogTitle id="form-dialog-title">Craete new case</DialogTitle>
+      <DialogTitle id="form-dialog-title">Create new case</DialogTitle>
       <DialogContent>
 
         <FormGroup column>
@@ -88,7 +88,7 @@ export const NewCase = ({ open, handleClose, ids }) => {
             value={values.id}
             required={true}
             error={validateId()}
-            helperText={validateId() ? "Provided id already exists" : " "}
+            helperText={validateId() ? 'Provided id already exists' : ' '}
           />
           {
             Object.keys(SYMPTOMS).map(symptomName =>

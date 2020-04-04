@@ -11,7 +11,7 @@ import Button from '@material-ui/core/Button'
 import ButtonGroup from '@material-ui/core/ButtonGroup'
 import { BucketStatus } from '../sample-allocation/allocate-samples'
 
-export const Buckets = ({ buckets, estimatedNumberOfTests, setBucketStatus, numberOfSamples }) => {
+export const Buckets = ({ buckets, estimatedNumberOfTests, setBucketStatus, remainedSamples }) => {
 
   useEffect(() => {
     window.location.hash = '#buckets'
@@ -23,7 +23,7 @@ export const Buckets = ({ buckets, estimatedNumberOfTests, setBucketStatus, numb
         Estimated number of tests: {estimatedNumberOfTests}
       </Typography>
       <Typography variant="subtitle1" style={{ marginBottom: 16 }}>
-        Traditional individual number of tests: {numberOfSamples}
+        Total remained samples: {remainedSamples}
       </Typography>
       <Grid
         container

@@ -124,6 +124,10 @@ class App extends React.Component {
     })
   }
 
+  remainedSamples () {
+    return this.state.buckets.reduce((prev, curr) => prev + curr.samples.length, 0)
+  }
+
   render () {
     return (
       <div className={'App'}>
@@ -132,7 +136,7 @@ class App extends React.Component {
             <Toolbar>
               <img src={logo} alt="logo" style={{ width: '64px', margin: '0 16px 0 0' }}/>
               <Typography variant="h4">
-                Smart Test
+                SmartTest
               </Typography>
             </Toolbar>
           </AppBar>
@@ -154,7 +158,7 @@ class App extends React.Component {
             {this.state.currentStep === STEPS.BUCKETS && <Buckets
               buckets={this.state.buckets}
               setBucketStatus={this.setBucketStatus.bind(this)}
-              numberOfSamples={this.state.cases.length}
+              remainedSamples={this.remainedSamples()}
               estimatedNumberOfTests={estimateNumberOfTests(this.state.buckets)}
             />}
 
