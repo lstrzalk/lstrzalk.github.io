@@ -1,4 +1,4 @@
-function allocateSamples(samplesParam) {
+export function allocateSamples(samplesParam) {
     let samples = (samplesParam.slice(0));
     let result = [];
     while (!(samples.length === 0)) {
@@ -66,7 +66,7 @@ function findBestBucketCapacity(sample) {
     return 1;
 }
 
-function estimateNumberOfTests(buckets) {
+export function estimateNumberOfTests(buckets) {
     let result = 0;
     for (let i = 0; i < buckets.length; i++) {
         result += 1;
