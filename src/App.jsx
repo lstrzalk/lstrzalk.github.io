@@ -92,25 +92,15 @@ class App extends React.Component {
     }, () => this.changeStage('BUCKETS'))
   }
 
-  setBucketNegative(bucketId) {
+  setBucketStatus (bucketId, status) {
     this.setState((state, props) => {
-      let newBuckets = state.buckets.splice(0)
-      let bucketIndex = newBuckets.findIndex((bucket) => bucket.id === bucketId)
-      let bucket = state.buckets[bucketIndex]
-      newBuckets.splice(bucketIndex, 1)
-      let newBucket = {...bucket, bucketStatus: BucketStatus.NEGATIVE}
-      console.log("Bucket id", bucketId)
-      console.log("Bucket changed", bucketIndex)
+      const buckets = state.buckets.slice(0)
+      const bucket = buckets.find(bucket => bucket.id === bucketId)
+      bucket.status = status
       return {
         ...state,
-        buckets: [...newBuckets, newBucket]
+        buckets
       }
-    })
-  }
-
-  setBucketPositive(bucketId) {
-    this.setState((state, props) => {
-      console.log("On positive")
     })
   }
 
@@ -121,7 +111,7 @@ class App extends React.Component {
           <AppBar position="static">
             <Toolbar>
               <Typography variant="h6">
-                Coronadvisor
+                <b>Covictory</b>
               </Typography>
             </Toolbar>
           </AppBar>
@@ -137,7 +127,7 @@ class App extends React.Component {
               </Button>
             </div>}
 
-            {this.state.currentStep === 'BUCKETS' && <Buckets buckets={this.state.buckets} setBucketNegative={this.setBucketNegative.bind(this)} setBucketPositive={this.setBucketPositive.bind(this)}/>}
+            {this.state.currentStep === 'BUCKETS' && <Buckets buckets={this.state.buckets} setBucketStatus={this.setBucketStatus.bind(this)}/>}
           </Container>
         </main>
       </div>
