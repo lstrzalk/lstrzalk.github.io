@@ -11,23 +11,26 @@ import Checkbox from '@material-ui/core/Checkbox'
 import TextField from '@material-ui/core/TextField'
 
 const SYMPTOM_NAMES = {
-  [SYMPTOMS.FEVER]: 'Gorączka',
-  [SYMPTOMS.COUGH]: 'Kaszel',
-  [SYMPTOMS.BREATHING_PROBLEM]: 'Duszności',
-  [SYMPTOMS.COMING_FROM_ABROAD]: 'Powrót z zagranicy',
-  [SYMPTOMS.CLOSE_CONTACT]: 'Bliski kontakt z osobą zakażoną'
+  [SYMPTOMS.FEVER]: 'Fever',
+  [SYMPTOMS.COUGH]: 'Cough',
+  [SYMPTOMS.BREATHING_PROBLEM]: 'Difficulty with breathing',
+  [SYMPTOMS.COMING_FROM_ABROAD]: 'Return from Abroad',
+  [SYMPTOMS.CLOSE_CONTACT]: 'Close contact with infected person'
+}
+
+const initialState = {
+  id: '',
+  symptoms: {
+    [SYMPTOMS.FEVER]: false,
+    [SYMPTOMS.COUGH]: false,
+    [SYMPTOMS.BREATHING_PROBLEM]: false,
+    [SYMPTOMS.COMING_FROM_ABROAD]: false,
+    [SYMPTOMS.CLOSE_CONTACT]: false
+  },
+  createNext: false
 }
 export const NewCase = ({ open, handleClose }) => {
-  const [values, setValues] = React.useState({
-    id: '',
-    symptoms: {
-      [SYMPTOMS.FEVER]: false,
-      [SYMPTOMS.COUGH]: false,
-      [SYMPTOMS.BREATHING_PROBLEM]: false,
-      [SYMPTOMS.COMING_FROM_ABROAD]: false,
-      [SYMPTOMS.CLOSE_CONTACT]: false
-    }
-  })
+  const [values, setValues] = React.useState(initialState)
 
   const updateSymptom = symptom => () => {
     setValues({
@@ -40,13 +43,37 @@ export const NewCase = ({ open, handleClose }) => {
     })
   }
 
+  const updateCreateNext = () => {
+    setValues({
+      ...values,
+      createNext: !values.createNext
+    })
+  }
+
   const updateId = (event) => {
     setValues({ ...values, id: event.target.value })
   }
 
+  const clearValues = () => {
+    setValues({ ...initialState, createNext: true })
+  }
+
+  const createNewCase = () => {
+    if (!values.createNext) {
+      handleClose({ close: true, values: { id: values.id, symptoms: values.symptoms } })
+    } else {
+      handleClose({ close: false, values: { id: values.id, symptoms: values.symptoms } })
+      clearValues()
+    }
+  }
+
+  const closeDialog = () => {
+    handleClose({ close: true })
+  }
+
   return (
     <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-      <DialogTitle id="form-dialog-title">Dodaj nowy przypadek</DialogTitle>
+      <DialogTitle id="form-dialog-title">Craete new case</DialogTitle>
       <DialogContent>
 
         <FormGroup column>
@@ -55,12 +82,14 @@ export const NewCase = ({ open, handleClose }) => {
             label="id"
             variant="outlined"
             onChange={updateId}
+            value={values.id}
+            required={true}
           />
           {
             Object.keys(SYMPTOMS).map(symptomName =>
               <FormControlLabel
                 key={symptomName}
-                control={<Checkbox checked={values[symptomName]} onChange={updateSymptom(symptomName)} name={SYMPTOM_NAMES[symptomName]}/>}
+                control={<Checkbox checked={values.symptoms[symptomName]} onChange={updateSymptom(symptomName)} name={SYMPTOM_NAMES[symptomName]}/>}
                 label={SYMPTOM_NAMES[symptomName]}
               />)
           }
@@ -69,12 +98,15 @@ export const NewCase = ({ open, handleClose }) => {
 
       </DialogContent>
       <DialogActions>
-
-        <Button onClick={handleClose({ close: true })} color="secondary">
-          Zamknij
+        <Button onClick={closeDialog} color="secondary">
+          Close
         </Button>
-        <Button onClick={handleClose({ close: true, values })} color="primary" disabled={!values.id}>
-          Stwórz
+        <FormControlLabel
+          control={<Checkbox checked={values.createNext} onChange={updateCreateNext} color={'secondary'}/>}
+          label="Create next case"
+        />
+        <Button onClick={createNewCase} color="primary" disabled={!values.id}>
+          Create
         </Button>
       </DialogActions>
     </Dialog>

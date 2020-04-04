@@ -25,7 +25,7 @@ export const Cases = ({ cases, addCase }) => {
     setValues({ newCaseModal: true })
   }
 
-  const closeModal = ({ close, values }) => () => {
+  const closeModal = ({ close, values }) => {
     setValues({ newCaseModal: !close })
     if (values) {
       addCase({ id: values.id, symptoms: Object.keys(values.symptoms).filter(key => values.symptoms[key]) })
@@ -39,12 +39,12 @@ export const Cases = ({ cases, addCase }) => {
           <TableHead>
             <TableRow>
               <TableCell>id</TableCell>
-              <TableCell align="right">Gorączka</TableCell>
-              <TableCell align="right">Kaszel</TableCell>
-              <TableCell align="right">Duszności</TableCell>
-              <TableCell align="right">Kontak z zakażonym</TableCell>
-              <TableCell align="right">Powrót zza granicy</TableCell>
-              <TableCell align="right">Prawdopodobieństwo</TableCell>
+              <TableCell align="right">Fever</TableCell>
+              <TableCell align="right">Cough</TableCell>
+              <TableCell align="right">Difficulty with breathing</TableCell>
+              <TableCell align="right">Close contact with infected person</TableCell>
+              <TableCell align="right">Return from Abroad</TableCell>
+              <TableCell align="right">Probability</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
