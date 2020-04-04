@@ -11,12 +11,13 @@ import { SYMPTOMS } from '../data'
 import { CheckCircleOutline, HighlightOff } from '@material-ui/icons'
 import green from '@material-ui/core/colors/green'
 import red from '@material-ui/core/colors/red'
+import Button from '@material-ui/core/Button'
 
 const symptomOccured = occured => occured ?
   <CheckCircleOutline style={{ color: green[500] }} /> : <HighlightOff style={{ color: red[500] }} />
 
 
-export const Cases = ({cases}) => (
+export const Cases = ({cases, calculateBuckets}) => (
   <div>
     <TableContainer component={Paper}>
       <Table aria-label="simple table">
@@ -48,5 +49,8 @@ export const Cases = ({cases}) => (
         </TableBody>
       </Table>
     </TableContainer>
+    <Button variant="contained" color="primary" onClick={calculateBuckets}>
+      Calculate buckets
+    </Button>
   </div>
 )
