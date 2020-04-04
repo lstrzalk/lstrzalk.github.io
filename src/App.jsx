@@ -1,7 +1,7 @@
 import React from 'react'
 import './App.scss'
 import { Cases } from './cases/Cases'
-import { SYMPTOMS, STEPS } from './data'
+import { STEPS } from './data'
 import Container from '@material-ui/core/Container'
 import { Buckets } from './buckets/Buckets'
 import AppBar from '@material-ui/core/AppBar/AppBar'
@@ -12,6 +12,8 @@ import calculateRisk from './risk'
 import { allocateSamples, BucketStatus, Bucket, estimateNumberOfTests } from './sample-allocation/allocate-samples'
 import { Summary } from './summary/Summary'
 import { demoCases } from './demoCases'
+import logo from './smartTestLogo.png'
+import Paper from '@material-ui/core/Paper/Paper'
 
 class App extends React.Component {
   constructor (props) {
@@ -88,6 +90,7 @@ class App extends React.Component {
       const newBucket = new Bucket()
       newBucket.samples.push(sample)
       newBucket.probability = sample.probability / bucket.probability
+      newBucket.recalculated = true
       sample.probability = newBucket.probability
       return newBucket
     }))
@@ -125,10 +128,11 @@ class App extends React.Component {
     return (
       <div className={'App'}>
         <header>
-          <AppBar position="static">
+          <AppBar position="static" color='transparent'>
             <Toolbar>
-              <Typography variant="h6">
-                <b>Covictory</b>
+              <img src={logo} alt="logo" style={{ width: '64px', margin: '0 16px 0 0' }}/>
+              <Typography variant="h4">
+                Smart Test
               </Typography>
             </Toolbar>
           </AppBar>
@@ -142,7 +146,7 @@ class App extends React.Component {
 
             {(!!this.state.cases.length && this.state.currentStep === STEPS.CASES) &&
             <div style={{ display: 'flex', justifyContent: 'center', margin: '16px' }}>
-              <Button size="large" color="primary" variant={'contained'} onClick={this.calculateBuckets.bind(this)}>
+              <Button size="large" color="secondary" variant={'contained'} onClick={this.calculateBuckets.bind(this)}>
                 Calculate buckets
               </Button>
             </div>}
@@ -155,7 +159,7 @@ class App extends React.Component {
 
             {(!!this.state.cases.length && this.state.currentStep === STEPS.BUCKETS) &&
             <div style={{ display: 'flex', justifyContent: 'center', margin: '16px' }}>
-              <Button size="large" color="primary" variant={'contained'} onClick={this.recalculateBuckets.bind(this)}>
+              <Button size="large" color="secondary" variant={'contained'} onClick={this.recalculateBuckets.bind(this)}>
                 Proceed
               </Button>
             </div>}

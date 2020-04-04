@@ -99,6 +99,7 @@ export class Bucket {
     reverseProbability = 1.0;
     samples = []
     bucketStatus = BucketStatus.NOT_CHECKED
+    recalculated = false
 }
 
 export const BucketStatus = {
