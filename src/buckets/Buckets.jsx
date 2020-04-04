@@ -9,8 +9,9 @@ import Link from '@material-ui/core/Link'
 import { SentimentVerySatisfied, SentimentVeryDissatisfied, HelpOutline } from '@material-ui/icons'
 import Button from '@material-ui/core/Button'
 import ButtonGroup from '@material-ui/core/ButtonGroup'
+import { BucketStatus } from '../sample-allocation/allocate-samples'
 
-export const Buckets = ({ buckets }) => (
+export const Buckets = ({ buckets, setBucketStatus }) => (
   <div>
     <Grid
       container
@@ -27,7 +28,7 @@ export const Buckets = ({ buckets }) => (
               #{bucket.id}
             </Typography>
             <Typography color="textSecondary">
-              Probability: {(bucket.probability*100).toFixed(2)}%
+              Probability: {(bucket.probability * 100).toFixed(2)}%
             </Typography>
             <Grid
               container
@@ -35,7 +36,7 @@ export const Buckets = ({ buckets }) => (
               justify="flex-start"
               alignItems="center"
               spacing={1}
-              style={{padding: "8px 0"}}
+              style={{ padding: '8px 0' }}
             >
               {bucket.samples.map((sample) =>
 
@@ -46,12 +47,11 @@ export const Buckets = ({ buckets }) => (
                         <Link>{sample.id}</Link>
                       </Typography>
                       <Typography color="textSecondary">
-                        Probability: {(sample.probability*100).toFixed(2)}%
+                        Probability: {(sample.probability * 100).toFixed(2)}%
                       </Typography>
                     </CardContent>
                   </Card>
                 </Grid>
-
               )}
 
             </Grid>
@@ -59,10 +59,32 @@ export const Buckets = ({ buckets }) => (
             <ButtonGroup
               orientation="vertical"
               fullWidth
+              disableRipple
+              disableElevation
+              disableFocusRipple
+              size='small'
             >
-              <Button fullWidth variant="outlined" size={'small'} startIcon={<SentimentVerySatisfied/>}> No Virus</Button>
-              <Button fullWidth variant="outlined" size={'small'} startIcon={<SentimentVeryDissatisfied/>}> Virus found</Button>
-              <Button fullWidth variant="outlined" size={'small'} startIcon={<HelpOutline/>}> Not tested</Button>
+              <Button
+                variant={bucket.status === BucketStatus.POSITIVE ? 'contained' : 'outlined'}
+                color={bucket.status === BucketStatus.POSITIVE ? 'primary' : 'default'}
+                startIcon={<SentimentVerySatisfied/>}
+                onClick={() => setBucketStatus(bucket.id, BucketStatus.POSITIVE)}
+
+              > No Virus </Button>
+
+              <Button
+                variant={bucket.status === BucketStatus.NEGATIVE ? 'contained' : 'outlined'}
+                color={bucket.status === BucketStatus.NEGATIVE ? 'primary' : 'default'}
+                startIcon={<SentimentVeryDissatisfied/>}
+                onClick={() => setBucketStatus(bucket.id, BucketStatus.NEGATIVE)}
+              > Virus found </Button>
+
+              <Button
+                variant={bucket.status === BucketStatus.NOT_CHECKED ? 'contained' : 'outlined'}
+                color={bucket.status === BucketStatus.NOT_CHECKED ? 'primary' : 'default'}
+                startIcon={<HelpOutline/>}
+                onClick={() => setBucketStatus(bucket.id, BucketStatus.NOT_CHECKED)}
+              > Not tested </Button>
             </ButtonGroup>
           </Paper>
         </Grid>

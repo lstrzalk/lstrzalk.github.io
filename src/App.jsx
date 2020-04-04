@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography'
 import Toolbar from '@material-ui/core/Toolbar'
 import Button from '@material-ui/core/Button'
 import calculateRisk from './risk'
-import { allocateSamples } from './sample-allocation/allocate-samples'
+import { allocateSamples, BucketStatus } from './sample-allocation/allocate-samples'
 
 class App extends React.Component {
   constructor (props) {
@@ -92,6 +92,18 @@ class App extends React.Component {
     }, () => this.changeStage('BUCKETS'))
   }
 
+  setBucketStatus (bucketId, status) {
+    this.setState((state, props) => {
+      const buckets = state.buckets.slice(0)
+      const bucket = buckets.find(bucket => bucket.id === bucketId)
+      bucket.status = status
+      return {
+        ...state,
+        buckets
+      }
+    })
+  }
+
   render () {
     return (
       <div className={'App'}>
@@ -99,7 +111,7 @@ class App extends React.Component {
           <AppBar position="static">
             <Toolbar>
               <Typography variant="h6">
-                Coronadvisor
+                <b>Covictory</b>
               </Typography>
             </Toolbar>
           </AppBar>
@@ -115,7 +127,7 @@ class App extends React.Component {
               </Button>
             </div>}
 
-            {this.state.currentStep === 'BUCKETS' && <Buckets buckets={this.state.buckets}/>}
+            {this.state.currentStep === 'BUCKETS' && <Buckets buckets={this.state.buckets} setBucketStatus={this.setBucketStatus.bind(this)}/>}
           </Container>
         </main>
       </div>
