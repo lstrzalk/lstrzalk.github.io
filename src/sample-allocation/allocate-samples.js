@@ -98,6 +98,13 @@ class Bucket {
     probability = 0.0;
     reverseProbability = 1.0;
     samples = []
+    bucketStatus = BucketStatus.NOT_CHECKED
+}
+
+export const BucketStatus = {
+    POSITIVE: 0,
+    NEGATIVE: 1,
+    NOT_CHECKED: 3
 }
 
 const BucketProbabilityRange = (function () {

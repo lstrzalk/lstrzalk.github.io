@@ -10,7 +10,7 @@ import { SentimentVerySatisfied, SentimentVeryDissatisfied, HelpOutline } from '
 import Button from '@material-ui/core/Button'
 import ButtonGroup from '@material-ui/core/ButtonGroup'
 
-export const Buckets = ({ buckets }) => (
+export const Buckets = ({ buckets, setBucketPositive, setBucketNegative }) => (
   <div>
     <Grid
       container

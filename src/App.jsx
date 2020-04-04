@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography'
 import Toolbar from '@material-ui/core/Toolbar'
 import Button from '@material-ui/core/Button'
 import calculateRisk from './risk'
-import { allocateSamples } from './sample-allocation/allocate-samples'
+import { allocateSamples, BucketStatus } from './sample-allocation/allocate-samples'
 
 class App extends React.Component {
   constructor (props) {
@@ -92,6 +92,28 @@ class App extends React.Component {
     }, () => this.changeStage('BUCKETS'))
   }
 
+  setBucketNegative(bucketId) {
+    this.setState((state, props) => {
+      let newBuckets = state.buckets.splice(0)
+      let bucketIndex = newBuckets.findIndex((bucket) => bucket.id === bucketId)
+      let bucket = state.buckets[bucketIndex]
+      newBuckets.splice(bucketIndex, 1)
+      let newBucket = {...bucket, bucketStatus: BucketStatus.NEGATIVE}
+      console.log("Bucket id", bucketId)
+      console.log("Bucket changed", bucketIndex)
+      return {
+        ...state,
+        buckets: [...newBuckets, newBucket]
+      }
+    })
+  }
+
+  setBucketPositive(bucketId) {
+    this.setState((state, props) => {
+      console.log("On positive")
+    })
+  }
+
   render () {
     return (
       <div className={'App'}>
@@ -115,7 +137,7 @@ class App extends React.Component {
               </Button>
             </div>}
 
-            {this.state.currentStep === 'BUCKETS' && <Buckets buckets={this.state.buckets}/>}
+            {this.state.currentStep === 'BUCKETS' && <Buckets buckets={this.state.buckets} setBucketNegative={this.setBucketNegative.bind(this)} setBucketPositive={this.setBucketPositive.bind(this)}/>}
           </Container>
         </main>
       </div>
