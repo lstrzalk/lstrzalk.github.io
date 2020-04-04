@@ -19,7 +19,7 @@ import Button from '@material-ui/core/Button'
 const symptomOccurred = occurred => occurred ?
   <CheckCircleOutline style={{ color: green[500] }}/> : <HighlightOff style={{ color: red[500] }}/>
 
-export const Cases = ({ cases, addCase }) => {
+export const Cases = ({ cases, addCase, addDemoCases }) => {
   const [values, setValues] = React.useState({ newCaseModal: false })
 
   const openModal = () => {
@@ -68,6 +68,9 @@ export const Cases = ({ cases, addCase }) => {
           </Table>
         </TableContainer>
         <div style={{ display: 'flex', width: '100%', justifyContent: 'flex-end', margin: '16px 0' }}>
+          <Fab variant="extended" style={{margin: 5}} onClick={addDemoCases}>
+            Load example cases
+          </Fab>
           <Fab onClick={openModal}>
             <AddIcon/>
           </Fab>
