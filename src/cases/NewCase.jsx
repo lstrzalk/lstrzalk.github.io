@@ -29,7 +29,7 @@ const initialState = {
   },
   createNext: false
 }
-export const NewCase = ({ open, handleClose }) => {
+export const NewCase = ({ open, handleClose, ids }) => {
   const [values, setValues] = React.useState(initialState)
 
   const updateSymptom = symptom => () => {
@@ -54,22 +54,25 @@ export const NewCase = ({ open, handleClose }) => {
     setValues({ ...values, id: event.target.value })
   }
 
-  const clearValues = () => {
-    setValues({ ...initialState, createNext: true })
+  const clearValues = (createNext) => {
+    setValues({ ...initialState, createNext })
   }
 
   const createNewCase = () => {
     if (!values.createNext) {
       handleClose({ close: true, values: { id: values.id, symptoms: values.symptoms } })
+      clearValues(false)
     } else {
       handleClose({ close: false, values: { id: values.id, symptoms: values.symptoms } })
-      clearValues()
+      clearValues(true)
     }
   }
 
   const closeDialog = () => {
     handleClose({ close: true })
   }
+
+  const validateId = () => values.id && ids.includes(values.id)
 
   return (
     <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
@@ -84,6 +87,8 @@ export const NewCase = ({ open, handleClose }) => {
             onChange={updateId}
             value={values.id}
             required={true}
+            error={validateId()}
+            helperText={validateId() ? "Provided id already exists" : " "}
           />
           {
             Object.keys(SYMPTOMS).map(symptomName =>
@@ -105,7 +110,7 @@ export const NewCase = ({ open, handleClose }) => {
           control={<Checkbox checked={values.createNext} onChange={updateCreateNext} color={'secondary'}/>}
           label="Create next case"
         />
-        <Button onClick={createNewCase} color="primary" disabled={!values.id}>
+        <Button onClick={createNewCase} color="primary" disabled={!values.id || validateId()}>
           Create
         </Button>
       </DialogActions>

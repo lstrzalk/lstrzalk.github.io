@@ -36,7 +36,7 @@ export const Cases = ({ cases, addCase, addDemoCases, removeCase }) => {
 
   return (
     <div>
-      <NewCase open={values.newCaseModal} handleClose={closeModal}/>
+      <NewCase open={values.newCaseModal} handleClose={closeModal} ids={cases.map(it => it.id)}/>
       {!!cases.length && <div>
         <TableContainer component={Paper}>
           <Table aria-label="simple table">
