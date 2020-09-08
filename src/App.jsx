@@ -13,6 +13,7 @@ import { allocateSamples, BucketStatus, Bucket, estimateNumberOfTests } from './
 import { Summary } from './summary/Summary'
 import { demoCases } from './demoCases'
 import logo from './smartTestLogo.png'
+import govtechLogo from './govtech_logo.png'
 import Paper from '@material-ui/core/Paper/Paper'
 
 class App extends React.Component {
@@ -172,6 +173,9 @@ class App extends React.Component {
             {this.state.currentStep === STEPS.SUMMARY && <Summary callback={this.resetState.bind(this)}/>}
           </Container>
         </main>
+        <footer>
+          <img src={govtechLogo} alt="govtechLogo" style={{ width: '64px', margin: '0 16px 0 0' }}/>
+        </footer>
       </div>
     )
   }
